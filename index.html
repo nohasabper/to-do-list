@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+/* Body Background */
+body.bg-light-gray {
+  background-color: #f2f2f2;
+  font-family: Arial, sans-serif;
+}
+
+/* Taskify Container */
+.container {
+  max-width: 500px;
+}
+
+/* Task Input and Add Button */
+#taskInput {
+  font-size: 16px;
+}
+#addTaskBtn {
+  background-color: #0A74DA;
+}
+
+/* Task List */
+.list-group-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+/* Completed Task */
+.completed {
+  text-decoration: line-through;
+  color: #aaa;
+}
+
+/* Delete Button */
+.delete-btn {
+  background-color: #FF4C4C;
+  border: none;
+  color: white;
+  font-weight: bold;
+  padding: 0.3rem 0.7rem;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background-color: #FF6666;
+}
+
+</style
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taskify - To-Do List</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-light-gray d-flex justify-content-center align-items-center vh-100">
+  <div class="container text-center p-4 rounded shadow bg-white">
+    <h1 class="mb-4">Taskify - To-Do List</h1>
+
+    <!-- Task Input Field -->
+    <div class="input-group mb-3">
+      <input type="text" id="taskInput" class="form-control" placeholder="Add a new task..." aria-label="Add a new task">
+      <button id="addTaskBtn" class="btn btn-primary text-white fw-bold">Add</button>
+    </div>
+
+    <!-- Task List -->
+    <ul id="taskList" class="list-group">
+      <!-- Dynamic Task Items Will Appear Here -->
+    </ul>
+  </div>
+
+  <script >
+  // Select input, button, and task list elements
+const taskInput = document.getElementById('taskInput');
+const addTaskBtn = document.getElementById('addTaskBtn');
+const taskList = document.getElementById('taskList');
+
+// Add Task Function
+addTaskBtn.addEventListener('click', addTask);
+taskInput.addEventListener('keypress', function (event) {
+  if (event.key === 'Enter') {
+    addTask();
+  }
+});
+
+function addTask() {
+  const taskText = taskInput.value.trim();
+  if (taskText !== '') {
+    // Create task item
+    const taskItem = document.createElement('li');
+    taskItem.className = 'list-group-item';
+    taskItem.innerHTML = `
+      <span class="task-text">${taskText}</span>
+      <button class="delete-btn">Delete</button>
+    `;
+
+    // Add event listeners to task item
+    taskItem.addEventListener('click', toggleComplete);
+    taskItem.querySelector('.delete-btn').addEventListener('click', deleteTask);
+
+    // Append task to list
+    taskList.appendChild(taskItem);
+
+    // Animate task addition
+    taskItem.style.opacity = 0;
+    setTimeout(() => taskItem.style.opacity = 1, 100);
+
+    // Clear input field
+    taskInput.value = '';
+  }
+}
+
+// Toggle Task Completion
+function toggleComplete(event) {
+  if (event.target.classList.contains('task-text')) {
+    event.target.classList.toggle('completed');
+  }
+}
+
+// Delete Task Function
+function deleteTask(event) {
+  const taskItem = event.target.parentElement;
+  taskItem.style.opacity = 0;
+  setTimeout(() => taskItem.remove(), 300);
+}
+
+  
+  </script>
+</body>
+
+</html>
